@@ -6,6 +6,9 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication
 
 
+from model import Model
+
+
 class App:
     def __init__(self):
         Form, Window = uic.loadUiType("interface.ui")
@@ -14,6 +17,8 @@ class App:
         Form_Edit, Edit = uic.loadUiType("edit.ui")
 
         app = QApplication([])
+
+        self.model = Model()
 
         # Main Window
         self.window = Window()
@@ -59,7 +64,7 @@ class App:
         # Dialog Window
         self.form_add_dialog.add_button.clicked.connect(self.show_dialog_info)
         self.form_add_dialog.back_button.clicked.connect(self.exit.show)
-        self.form_add_dialog.class_box.addItems(['Mama','Papa']) # add items
+        self.form_add_dialog.class_box.addItems(self.model.get_classes()) # add items
 
         # Exit Window
         self.form_exit.yes_button.clicked.connect(self.exit.close)
