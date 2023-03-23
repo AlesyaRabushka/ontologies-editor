@@ -22,7 +22,7 @@ class App(QWidget):
 
 
 
-        self.model = Model()
+        self.model = Model('')
 
         # Main Window
         self.window = Window()
@@ -47,6 +47,9 @@ class App(QWidget):
         # for exit dialog to know which dialog to close
         self.current_dialog_window = ''
 
+        # current ontology filename
+        self.current_ontology = ''
+
         self.window.show()
 
         # all button clickes configuration
@@ -57,6 +60,11 @@ class App(QWidget):
 
 
     def settings_configuration(self):
+        """
+        Used to set all buttons configurations
+        :return:
+        """
+
         # Main Window
         self.form.open_file_button.clicked.connect(self.open_file)
         self.form.add_button.clicked.connect(self.add_dialog.open)
@@ -96,17 +104,19 @@ class App(QWidget):
         #     print('edit')
         self.form_exit.no_button.clicked.connect(self.exit.close)
 
+
     def open_file(self):
-        # filename, ok = QFileDialog.getOpenFileName(
-        #     self,
-        #     "Select a File",
-        #     "D:\Kyrs3\PBZ_6sem\ontologies-editor\Documents",
-        #     "Text File (*.owl)"
-        # )
+        """
+        Used to open file with chosen ontology
+        :return:
+        """
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        self.file, _ = QFileDialog.getOpenFileName(self, "Выбрать файл", "D:\Kyrs3\PBZ_6sem\ontologies-editor\Documents", "Text Files (*.owl)", options=options)
-
+        self.current_ontology, _ = QFileDialog.getOpenFileName(self, "Выбрать файл", "D:\Kyrs3\PBZ_6sem\ontologies-editor\Documents", "Text Files (*.owl)", options=options)
+        if self.current_ontology:
+            self.model = Model(self.current_ontology)
+            self.model.update(self.current_ontology)
+            self.settings_configuration()
 
 
     def _on_click_back(self, button, window_name, window):

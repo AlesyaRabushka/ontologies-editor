@@ -2,9 +2,10 @@ from rdf_parser import RDFParser
 
 
 class Model:
-    def __init__(self):
-        self.parser = RDFParser()
+    def __init__(self, filename):
+        self.parser = RDFParser(filename)
         self.classes_list = []
+
 
     def get_classes(self):
         """
@@ -23,3 +24,12 @@ class Model:
         for row in request_result:
             self.classes_list.append(self.parser.get_clear_value(row.subject))
         return self.classes_list
+
+
+    def update(self, filename):
+        """
+        Used to update current states of all the fields
+        :return:
+        """
+        self.parser = RDFParser(filename)
+        self.get_classes()
