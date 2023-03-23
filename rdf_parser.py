@@ -50,6 +50,12 @@ class RDFParser:
         """
         return self.graph.query(query_text)
 
+    def add_object(self):
+        pass
+
+
+
+
 
 
 # p = RDFParser()

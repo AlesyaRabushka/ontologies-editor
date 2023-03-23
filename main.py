@@ -3,7 +3,7 @@ from dialog import *
 from exit import *
 
 from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget, QApplication, QFileDialog
+from PyQt5.QtWidgets import QWidget, QApplication, QFileDialog, QTableWidgetItem
 
 
 
@@ -69,7 +69,7 @@ class App(QWidget):
         self.form.open_file_button.clicked.connect(self.open_file)
         self.form.add_button.clicked.connect(self.add_dialog.open)
         self.form.edit_button.clicked.connect(self.edit.open)
-
+        self.load_table_data()
 
         # Open File window
 
@@ -117,6 +117,31 @@ class App(QWidget):
             self.model = Model(self.current_ontology)
             self.model.update(self.current_ontology)
             self.settings_configuration()
+
+    def load_table_data(self):
+        """
+        Used to load data into the table
+        :return:
+        """
+        self.form.tableWidget.setColumnWidth(0, 250)
+        self.form.tableWidget.setColumnWidth(1, 250)
+        self.form.tableWidget.setColumnWidth(2, 300)
+
+
+        data = self.model.get_main_table_info()
+        # [{'class':'nnana', "subclass":'cccc', 'object':'ddd'},{'class':'nnana', "subclass":'cccc', 'object':'ddd'}]
+        row = 0
+        self.form.tableWidget.setRowCount(len(data))
+
+        for item in data:
+            self.form.tableWidget.setItem(row, 0, QTableWidgetItem(item['class']))
+            self.form.tableWidget.setItem(row, 1, QTableWidgetItem(item['subclass']))
+            self.form.tableWidget.setItem(row, 2, QTableWidgetItem(item['object']))
+            row += 1
+        print('here')
+
+
+
 
 
     def _on_click_back(self, button, window_name, window):
