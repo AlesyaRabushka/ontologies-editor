@@ -76,7 +76,7 @@ class App(QWidget):
 
 
         # Add Dialog Window
-        self.form_add_dialog.add_button.clicked.connect(self.show_dialog_info)
+        self.form_add_dialog.add_button.clicked.connect(self.add_dialog_info)
         self.form_add_dialog.back_button.clicked.connect(self.add_dialog.close)
         # self.form_add_dialog.back_button.clicked.connect(self.exit.show)
         self.form_add_dialog.class_box.addItems(self.model.get_classes()) # to select one of the classes
@@ -140,6 +140,16 @@ class App(QWidget):
             row += 1
         print('here')
 
+    def add_dialog_info(self):
+        """
+        Used to add new elements of the ontology
+        :return:
+        """
+        print(self.form_add_dialog.lineEdit.displayText())
+        print(self.form_add_dialog.class_box.currentText())
+        self.model.add_object(self.form_add_dialog.lineEdit.displayText(), self.form_add_dialog.class_box.currentText())
+        self.settings_configuration()
+
 
 
 
@@ -159,8 +169,7 @@ class App(QWidget):
         self.current_dialog_window = 'edit'
         print('edit')
 
-    def show_dialog_info(self):
-        print(self.form_dialog.lineEdit.displayText())
+
 
 
 if __name__ == '__main__':

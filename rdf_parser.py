@@ -1,4 +1,4 @@
-from rdflib import Graph, Literal, RDF, URIRef
+from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import FOAF, XSD
 from rdflib.plugins.sparql import prepareQuery
 
@@ -25,6 +25,8 @@ class RDFParser:
         self.graph = Graph()
         if filename:
             self.graph.parse(filename) # given ontology
+            self.namespace = Namespace('http://www.semanticweb.org/rabus/ontologies/2023/1/dance_directions#')
+
 
 
     def get_clear_value(self, prefixed_value):
@@ -34,11 +36,13 @@ class RDFParser:
         :return:
         """
         output = ''
+        # print(prefixed_value)
         for c in prefixed_value[::-1]:
             if c != '#':
                 output += c
             else:
                 break
+
         return output[::-1]
 
 
@@ -50,10 +54,20 @@ class RDFParser:
         """
         return self.graph.query(query_text)
 
-    def add_object(self):
-        pass
+    def add_object(self, object_name, class_name):
+        """
+        Used to add item into ontology
+        """
+        print('class - ', class_name)
+        object = URIRef('http://www.semanticweb.org/rabus/ontologies/2023/1/dance_directions#' + str(object_name))
+        # s = Namespace(self.namespace + f'{class_name}')
 
-
+        self.graph.bind('my', self.namespace)
+        # print(s)
+        self.graph.add((object, RDF.type, self.namespace[f'{class_name}']))
+        print('done')
+        # self.graph.serialize(format="xml")
+        self.graph.serialize(destination="f.owl")
 
 
 

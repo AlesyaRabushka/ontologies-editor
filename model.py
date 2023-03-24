@@ -34,6 +34,10 @@ class Model:
 
 
     def get_main_table_info(self):
+        """
+        Used to get info for the main table
+        :return:
+        """
         value = ''
         query_text = """
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -58,7 +62,6 @@ class Model:
             
             SELECT  ?book
             WHERE {?book rdf:type my:%s}"""%item)
-            print(item)
             # print(request_result)
             for row in request_result:
                 for pare in self.class_subclass_list:
@@ -82,3 +85,11 @@ class Model:
         """
         self.parser = RDFParser(filename)
         self.get_classes()
+        self.get_main_table_info()
+
+    def add_object(self, object_name, class_name):
+        """
+        Used to add new item into ontology
+        :return:
+        """
+        self.parser.add_object(object_name, class_name)
