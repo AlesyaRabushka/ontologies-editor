@@ -14,6 +14,7 @@ class Model:
         Used to fill in the list of classes
         :return:
         """
+        print('get classes')
         query_text = """
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -22,7 +23,7 @@ class Model:
         SELECT ?subject ?object
             WHERE { ?subject rdfs:subClassOf ?object }"""
         request_result = self.parser.execute_request(query_text)
-
+        print('after request')
         for row in request_result:
             if self.parser.get_clear_value(row.subject) not in self.subclasses_list:
                 self.subclasses_list.append(self.parser.get_clear_value(row.subject))
@@ -30,6 +31,7 @@ class Model:
             d[self.parser.get_clear_value(row.object)] = self.parser.get_clear_value(row.subject)
             if d not in self.class_subclass_list:
                 self.class_subclass_list.append(d)
+
         return self.subclasses_list
 
 
@@ -38,6 +40,7 @@ class Model:
         Used to get info for the main table
         :return:
         """
+        print('get main table info')
         value = ''
         query_text = """
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -62,7 +65,7 @@ class Model:
             
             SELECT  ?book
             WHERE {?book rdf:type my:%s}"""%item)
-            # print(request_result)
+            print(request_result)
             for row in request_result:
                 for pare in self.class_subclass_list:
                     for class_, subclass in pare.items():
@@ -73,6 +76,7 @@ class Model:
                             d['object'] = self.parser.get_clear_value(row[0])
                             if d not in self.class_item_list:
                                 self.class_item_list.append(d)
+        print(self.class_item_list)
 
         return self.class_item_list
 
@@ -87,9 +91,9 @@ class Model:
         self.get_classes()
         self.get_main_table_info()
 
-    def add_object(self, object_name, class_name):
+    def add_object(self, object_name, class_name, new_class_name):
         """
         Used to add new item into ontology
         :return:
         """
-        self.parser.add_object(object_name, class_name)
+        self.parser.add_object(object_name, class_name, new_class_name)

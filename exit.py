@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Kyrs3\PBZ_6sem\ontologies-editor\exit.ui'
+# Form implementation generated from reading ui file 'D:\Kyrs3\PBZ_6sem\ontologies-editor\ui\exit.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #

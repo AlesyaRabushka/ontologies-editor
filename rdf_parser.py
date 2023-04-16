@@ -24,8 +24,15 @@ class RDFParser:
     def __init__(self, filename):
         self.graph = Graph()
         if filename:
-            self.graph.parse(filename) # given ontology
-            self.namespace = Namespace('http://www.semanticweb.org/rabus/ontologies/2023/1/dance_directions#')
+            print('in file')
+            try:
+                print(filename)
+                self.graph.parse(filename) # given ontology
+                # for s,p,o in self.graph.triples((None, None, None)):
+                #     print(s,p,o)
+                self.namespace = Namespace('http://www.semanticweb.org/rabus/ontologies/2023/1/dance_directions#')
+            except:
+                print('HERE IS ERROR')
 
 
 
@@ -35,13 +42,15 @@ class RDFParser:
         :param prefixed_value:
         :return:
         """
+        # print('get clear')
         output = ''
-        # print(prefixed_value)
+        print(prefixed_value)
         for c in prefixed_value[::-1]:
             if c != '#':
                 output += c
             else:
                 break
+
 
         return output[::-1]
 
@@ -52,22 +61,31 @@ class RDFParser:
         :param query_text:
         :return:
         """
+        # print('request is done')
         return self.graph.query(query_text)
 
-    def add_object(self, object_name, class_name):
+
+    def add_object(self, object_name, class_name, new_class_name):
         """
         Used to add item into ontology
         """
-        print('class - ', class_name)
+        print('class - ', class_name, 'new class', new_class_name)
         object = URIRef('http://www.semanticweb.org/rabus/ontologies/2023/1/dance_directions#' + str(object_name))
         # s = Namespace(self.namespace + f'{class_name}')
 
         self.graph.bind('my', self.namespace)
         # print(s)
         self.graph.add((object, RDF.type, self.namespace[f'{class_name}']))
+
+
         print('done')
         # self.graph.serialize(format="xml")
-        self.graph.serialize(destination="f.owl")
+        self.graph.serialize(destination="D:\Kyrs3\PBZ_6sem\ontologies-editor\Documents\\f.rdf")
+        # v = self.graph.serialize(format='trix')
+        # print(v)
+        # f = open('D:\\Kyrs3\\PBZ_6sem\\ontologies-editor\\Documents\\file.owl', 'w')
+        # f.writelines(v)
+        # f.close()
 
 
 

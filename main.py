@@ -15,10 +15,10 @@ class App(QWidget):
         app = QApplication([])
         super().__init__()
 
-        Form, Window = uic.loadUiType("interface.ui")
-        Form_Dialog, Dialog = uic.loadUiType("dialog.ui")
-        Form_Exit, Exit = uic.loadUiType("exit.ui")
-        Form_Edit, Edit = uic.loadUiType("edit.ui")
+        Form, Window = uic.loadUiType("ui/interface.ui")
+        Form_Dialog, Dialog = uic.loadUiType("ui/dialog.ui")
+        Form_Exit, Exit = uic.loadUiType("ui/exit.ui")
+        Form_Edit, Edit = uic.loadUiType("ui/edit.ui")
 
 
 
@@ -112,7 +112,7 @@ class App(QWidget):
         """
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        self.current_ontology, _ = QFileDialog.getOpenFileName(self, "Выбрать файл", "D:\Kyrs3\PBZ_6sem\ontologies-editor\Documents", "Text Files (*.owl)", options=options)
+        self.current_ontology, _ = QFileDialog.getOpenFileName(self, "Выбрать файл", "D:\Kyrs3\PBZ_6sem\ontologies-editor\Documents", "Text Files (*.rdf) (*owl)", options=options)
         if self.current_ontology:
             self.model = Model(self.current_ontology)
             self.model.update(self.current_ontology)
@@ -145,9 +145,9 @@ class App(QWidget):
         Used to add new elements of the ontology
         :return:
         """
-        print(self.form_add_dialog.lineEdit.displayText())
+        print(self.form_add_dialog.new_object.displayText())
         print(self.form_add_dialog.class_box.currentText())
-        self.model.add_object(self.form_add_dialog.lineEdit.displayText(), self.form_add_dialog.class_box.currentText())
+        self.model.add_object(self.form_add_dialog.new_object.displayText(), self.form_add_dialog.class_box.currentText(), self.form_add_dialog.new_class.currentText())
         self.settings_configuration()
 
 
